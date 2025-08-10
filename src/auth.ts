@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-import LinkedInProvider from "next-auth/providers/linkedin";
+//import GitHubProvider from "next-auth/providers/github";
+//import LinkedInProvider from "next-auth/providers/linkedin";
 
 export const {
 handlers: {GET, POST},
@@ -23,4 +23,6 @@ signOut
       },
     }),
   ],
+   secret: process.env.NEXTAUTH_SECRET!,
+     debug: true,
 });
