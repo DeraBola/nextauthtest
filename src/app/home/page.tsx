@@ -2,6 +2,7 @@ import React from "react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import Logout from "@/components/Logout";
 
 const HomePage = async () => {
   const session = await auth();
@@ -20,6 +21,7 @@ const HomePage = async () => {
         height={72}
         className="rounded-full mb-4"
       />
+      <Logout />
     </div>
   );
 };

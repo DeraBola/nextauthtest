@@ -1,6 +1,6 @@
 'use server'
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 
 export async function doSocialLogin(formData: any) {
     const action = formData.get("action");
@@ -9,5 +9,5 @@ export async function doSocialLogin(formData: any) {
 }
 
 export async function doLogout() {
-    
+    await signOut({ redirectTo: "/" });
 }
