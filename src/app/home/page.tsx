@@ -8,7 +8,7 @@ const HomePage = async () => {
   const session = await auth();
 
   if (!session?.user) redirect("/");
-  console.log(session?.user?.image);
+  console.log("session: ", session);
 
 
   return (
