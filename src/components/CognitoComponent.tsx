@@ -3,10 +3,13 @@
 import { useAuth } from "react-oidc-context";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Image from "next/image";
 
 export default function CognitoComponent() {
   const auth = useAuth();
   const router = useRouter();
+
+  console.log("authCognito: ", auth);
 
   // 🔹 Protect this page: redirect to /login if not authenticated
   useEffect(() => {
@@ -15,12 +18,16 @@ export default function CognitoComponent() {
     }
   }, [auth.isLoading, auth.isAuthenticated, router]);
 
-  const signOutRedirect = () => {
+  const signOutRedirect = async () => {
     const clientId = "7i1ep58u5qm8vpt3914608vm6f";
     const logoutUri = "http://localhost:3000/login"; // must be allowed in Cognito
     const cognitoDomain =
       "https://eu-north-1wrickx15x.auth.eu-north-1.amazoncognito.com";
 
+    // 1. Clear local session
+    await auth.removeUser();
+
+     // 2. Redirect to Cognito logout
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
       logoutUri
     )}`;
@@ -51,7 +58,14 @@ export default function CognitoComponent() {
   return (
     <div className="flex flex-col items-center h-full w-full justify-start">
       <div className="flex w-[60%] justify-center items-center flex-col gap-4">
-        <pre>Hello: {auth.user?.profile.email}</pre>
+        <pre>Hello: {auth.user?.profile.name}</pre>
+           <Image
+                src={auth.user?.profile?.picture || "/default-avatar.png"}
+                alt={auth.user?.profile?.picture || "User Avatar"}
+                width={100}
+                height={72}
+                className="rounded-full mb-4"
+              />
         <pre>ID Token: {auth.user?.id_token}</pre>
         <pre>Access Token: {auth.user?.access_token}</pre>
         <pre>Refresh Token: {auth.user?.refresh_token}</pre>
