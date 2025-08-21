@@ -1,3 +1,4 @@
+// Cognito configuration
 export const cognitoAuthConfig = {
   authority:
     "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_WrIckx15X", // your pool ID endpoint

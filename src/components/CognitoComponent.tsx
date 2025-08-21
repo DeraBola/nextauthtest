@@ -27,7 +27,7 @@ export default function CognitoComponent() {
     // 1. Clear local session
     await auth.removeUser();
 
-     // 2. Redirect to Cognito logout
+    // 2. Redirect to Cognito logout
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
       logoutUri
     )}`;
@@ -59,13 +59,13 @@ export default function CognitoComponent() {
     <div className="flex flex-col items-center h-full w-full justify-start">
       <div className="flex w-[60%] justify-center items-center flex-col gap-4">
         <pre>Hello: {auth.user?.profile.name}</pre>
-           <Image
-                src={auth.user?.profile?.picture || "/default-avatar.png"}
-                alt={auth.user?.profile?.picture || "User Avatar"}
-                width={100}
-                height={72}
-                className="rounded-full mb-4"
-              />
+        <Image
+          src={auth.user?.profile?.picture || "/default-avatar.png"}
+          alt={auth.user?.profile?.picture || "User Avatar"}
+          width={100}
+          height={72}
+          className="rounded-full mb-4"
+        />
         <pre>ID Token: {auth.user?.id_token}</pre>
         <pre>Access Token: {auth.user?.access_token}</pre>
         <pre>Refresh Token: {auth.user?.refresh_token}</pre>
