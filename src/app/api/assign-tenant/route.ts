@@ -4,6 +4,7 @@ import {
   AdminAddUserToGroupCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AwsCredentialIdentity } from "@aws-sdk/types";
+import { NextRequest } from "next/server";
 
 // Initialize client
 const credentials: AwsCredentialIdentity = {
@@ -16,9 +17,12 @@ const client = new CognitoIdentityProviderClient({
   credentials: credentials
 });
 
-export async function POST(req: { json: () => any; }) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    
+    console.log("body: ", body);
+
     const { username, tenant } = body;
 
     if (!username || !tenant) {
@@ -42,7 +46,7 @@ export async function POST(req: { json: () => any; }) {
       new AdminAddUserToGroupCommand({
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: username,
-        GroupName: tenant, // ensure group exists
+        GroupName: "TenantOne", // ensure group exists
       })
     );
 
