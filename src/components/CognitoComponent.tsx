@@ -31,9 +31,6 @@ export default function CognitoComponent() {
 
   console.log("authCognito: ", auth);
 
-  console.log("Region:", process.env.AWS_REGION);
-  console.log("Key ID:", process.env.AWS_ACCESS_KEY_ID?.slice(0, 4)); // mask
-
   // 🔹 Protect this page: redirect to /login if not authenticated
   useEffect(() => {
     if (!auth.isLoading && !auth.isAuthenticated) {
@@ -61,7 +58,7 @@ export default function CognitoComponent() {
     const clientId = "7i1ep58u5qm8vpt3914608vm6f";
     const logoutUri = "http://localhost:3000/login"; // must be allowed in Cognito
     const cognitoDomain =
-      "https://eu-north-1b2yu5nnac.auth.eu-north-1.amazoncognito.com";
+      "https://eu-north-1wrickx15x.auth.eu-north-1.amazoncognito.com";
 
     // 1. Clear local session
     await auth.removeUser();

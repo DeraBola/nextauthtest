@@ -3,14 +3,14 @@ import {
   CognitoIdentityProviderClient,
   AdminUpdateUserAttributesCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
-import jwt from "jsonwebtoken"; // or jose for better verification
+import jwt from "jsonwebtoken";
+import { fromEnv } from "@aws-sdk/credential-providers";
+
+console.log("ALL ENV:", process.env);
 
 const client = new CognitoIdentityProviderClient({
   region: process.env.AWS_REGION,
-   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
+  credentials: fromEnv(),
 });
 
 export async function POST(req: NextRequest) {
@@ -27,14 +27,17 @@ export async function POST(req: NextRequest) {
     // ⚠️ For production, verify JWT properly with Cognito JWKS
     const decoded: any = jwt.decode(token);
     console.log("decoded: ", decoded);
-    const userSub = decoded.sub;
-    console.log("userSub: ", userSub);
+
+    // Use Cognito’s internal username, not sub
+    const cognitoUsername = decoded["cognito:username"];
+    console.log("cognitoUsername: ", cognitoUsername);
+
     const { tenant } = await req.json();
 
     const command = new AdminUpdateUserAttributesCommand({
       UserPoolId: process.env.USER_POOL_ID!,
-      Username: userSub,
-      UserAttributes: [{ Name: "custom:Tenant", Value: tenant }],
+      Username: cognitoUsername,
+      UserAttributes: [{ Name: "custom:tenant_id", Value: tenant }],
     });
 
     await client.send(command);
