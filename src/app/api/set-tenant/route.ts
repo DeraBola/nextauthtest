@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   CognitoIdentityProviderClient,
   AdminUpdateUserAttributesCommand,
+  AdminGetUserCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import jwt from "jsonwebtoken";
 import { fromEnv } from "@aws-sdk/credential-providers";
@@ -32,13 +33,53 @@ export async function POST(req: NextRequest) {
     const cognitoUsername = decoded["cognito:username"];
     console.log("cognitoUsername: ", cognitoUsername);
 
-    const { tenant } = await req.json();
+    const { tenants } = await req.json();
+
+    let newTenantString: string;
+
+    if (Array.isArray(tenants)) {
+      newTenantString = tenants.join(", ");
+    } else if (typeof tenants === "string") {
+      newTenantString = tenants;
+    } else {
+      return NextResponse.json(
+        { error: "Invalid tenants format" },
+        { status: 400 }
+      );
+    }
+
+    // 🔑 1. Fetch current value from Cognito
+    const user = await client.send(
+      new AdminGetUserCommand({
+        UserPoolId: process.env.USER_POOL_ID!,
+        Username: cognitoUsername,
+      })
+    );
+
+    const currentTenantAttr = user.UserAttributes?.find(
+      (attr) => attr.Name === "custom:tenant_id"
+    );
+
+    let finalTenantString = newTenantString;
+
+    // 🔑 2. Append only if there’s a previous value and avoid duplicates
+    if (currentTenantAttr?.Value) {
+      const existingTenants = currentTenantAttr.Value.split(", ").map((t) =>
+        t.trim()
+      );
+      if (!existingTenants.includes(newTenantString)) {
+        existingTenants.push(newTenantString);
+      }
+      finalTenantString = existingTenants.join(", ");
+    }
 
     const command = new AdminUpdateUserAttributesCommand({
       UserPoolId: process.env.USER_POOL_ID!,
       Username: cognitoUsername,
-      UserAttributes: [{ Name: "custom:tenant_id", Value: tenant }],
+      UserAttributes: [{ Name: "custom:tenant_id", Value: finalTenantString }],
     });
+
+    console.log("finalTenantString: ", finalTenantString);
 
     await client.send(command);
 

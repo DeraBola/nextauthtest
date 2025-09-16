@@ -40,8 +40,14 @@ export default function CognitoComponent() {
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      const tenant = window.location.hostname.split(".")[0]; // xyz
-      console.log("tenant: ", tenant);
+      //   const tenant = window.location.hostname.split(".")[0]; // xyz
+      //   console.log("tenant: ", tenant);
+
+      const fullUrl = window.location.origin; // "http://localhost:3001"
+      console.log("fullUrl: ", fullUrl);
+
+      // Always send as array
+      const tenants = [fullUrl];
       // Call your API to set the tenant for the user
       fetch("/api/set-tenant", {
         method: "POST",
@@ -49,14 +55,14 @@ export default function CognitoComponent() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.user?.id_token}`, // pass ID token
         },
-        body: JSON.stringify({ tenant }),
+        body: JSON.stringify({ tenants }),
       });
     }
   }, [auth.isAuthenticated]);
 
   const signOutRedirect = async () => {
     const clientId = "7i1ep58u5qm8vpt3914608vm6f";
-    const logoutUri = "http://localhost:3000/login"; // must be allowed in Cognito
+    const logoutUri = "http://localhost:3001/login"; // must be allowed in Cognito
     const cognitoDomain =
       "https://eu-north-1wrickx15x.auth.eu-north-1.amazoncognito.com";
 
