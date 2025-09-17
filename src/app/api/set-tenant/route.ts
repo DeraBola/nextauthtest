@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing token" }, { status: 401 });
     }
 
-    // ⚠️ For production, verify JWT properly with Cognito JWKS
+    // For production, verify JWT properly with Cognito JWKS
     const decoded: any = jwt.decode(token);
     console.log("decoded: ", decoded);
 
