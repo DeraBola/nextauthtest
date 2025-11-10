@@ -5,18 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import type { Session as NextAuthSession } from "@auth/core/types";
-import { Button } from "@myteam/react-storybook";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button, Selectfield } from "@myteam/react-storybook";
 
 type Session = NextAuthSession & {
   user?: {
@@ -110,8 +99,19 @@ export default function CognitoComponent() {
         />
 
         <Button variant="destructive"  size="lg" loading={true}>
-          i AM FROM UI LIBRARY
+          I AM FROM UI LIBRARY
           </Button>
+
+          <Selectfield
+            id="select-tenant"
+            label="Select an Option from design library"
+            options={[
+              { label: "Option 1", value: "option1" },
+              { label: "Option 2", value: "option2" },
+              { label: "Option 3", value: "option3" },
+            ]}
+          />
+          
         <div className="flex w-full flex-col gap-2 items-center justify-center p-4">
           <p className="break-all whitespace-pre-wrap">
             <span className="font-bold">ID Token: </span>
