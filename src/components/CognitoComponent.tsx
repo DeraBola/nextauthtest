@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import type { Session as NextAuthSession } from "@auth/core/types";
-import { Button } from "@/components/ui/button";
+import { Button } from "@myteam/react-storybook";
 import {
   Card,
   CardContent,
@@ -62,7 +62,7 @@ export default function CognitoComponent() {
 
   const signOutRedirect = async () => {
     const clientId = "7i1ep58u5qm8vpt3914608vm6f";
-    const logoutUri = "http://localhost:3001/login"; // must be allowed in Cognito
+    const logoutUri = "http://localhost:3000/login"; // must be allowed in Cognito
     const cognitoDomain =
       "https://eu-north-1wrickx15x.auth.eu-north-1.amazoncognito.com";
 
@@ -108,6 +108,10 @@ export default function CognitoComponent() {
           height={72}
           className="rounded-full mb-4"
         />
+
+        <Button variant="destructive"  size="lg" loading={true}>
+          i AM FROM UI LIBRARY
+          </Button>
         <div className="flex w-full flex-col gap-2 items-center justify-center p-4">
           <p className="break-all whitespace-pre-wrap">
             <span className="font-bold">ID Token: </span>
