@@ -17,6 +17,8 @@ const client = new CognitoIdentityProviderClient({
   credentials: credentials
 });
 
+// “Admin assigns a tenant to a Cognito user and adds them to a group.”
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -37,7 +39,7 @@ export async function POST(req: NextRequest) {
       new AdminUpdateUserAttributesCommand({
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: username,
-        UserAttributes: [{ Name: "custom:tenant_id", Value: tenant }],
+        UserAttributes: [{ Name: "custom:Tenant", Value: tenant }],
       })
     );
 

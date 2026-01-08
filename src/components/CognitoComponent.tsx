@@ -50,10 +50,10 @@ export default function CognitoComponent() {
   }, [auth.isAuthenticated]);
 
   const signOutRedirect = async () => {
-    const clientId = "7i1ep58u5qm8vpt3914608vm6f";
-    const logoutUri = "http://localhost:3000/login"; // must be allowed in Cognito
+    const clientId = "1hhpd7gfqh7cp6e92n3n7osfhq";
+    const logoutUri = "http://localhost:3001/login"; // must be allowed in Cognito
     const cognitoDomain =
-      "https://eu-north-1wrickx15x.auth.eu-north-1.amazoncognito.com";
+      "https://eu-north-1b2yu5nnac.auth.eu-north-1.amazoncognito.com";
 
     // 1. Clear local session
     await auth.removeUser();
@@ -98,20 +98,20 @@ export default function CognitoComponent() {
           className="rounded-full mb-4"
         />
 
-        <Button variant="destructive"  size="lg" loading={true}>
+        <Button variant="destructive" size="lg" loading={true}>
           I AM FROM UI LIBRARY
-          </Button>
+        </Button>
 
-          <Selectfield
-            id="select-tenant"
-            label="Select an Option from design library"
-            options={[
-              { label: "Option 1", value: "option1" },
-              { label: "Option 2", value: "option2" },
-              { label: "Option 3", value: "option3" },
-            ]}
-          />
-          
+        <Selectfield
+          id="select-tenant"
+          label="Select an Option from design library"
+          options={[
+            { label: "Option 1", value: "option1" },
+            { label: "Option 2", value: "option2" },
+            { label: "Option 3", value: "option3" },
+          ]}
+        />
+
         <div className="flex w-full flex-col gap-2 items-center justify-center p-4">
           <p className="break-all whitespace-pre-wrap">
             <span className="font-bold">ID Token: </span>

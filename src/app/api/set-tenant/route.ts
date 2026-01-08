@@ -14,6 +14,8 @@ const client = new CognitoIdentityProviderClient({
   credentials: fromEnv(),
 });
 
+
+// “Logged-in user updates their own tenant list stored in Cognito.”
 export async function POST(req: NextRequest) {
   try {
     const authHeader = req.headers.get("authorization") || "";
@@ -57,7 +59,7 @@ export async function POST(req: NextRequest) {
     );
 
     const currentTenantAttr = user.UserAttributes?.find(
-      (attr) => attr.Name === "custom:tenant_id"
+      (attr) => attr.Name === "custom:Tenant"
     );
 
     let finalTenantString = newTenantString;
@@ -76,7 +78,7 @@ export async function POST(req: NextRequest) {
     const command = new AdminUpdateUserAttributesCommand({
       UserPoolId: process.env.USER_POOL_ID!,
       Username: cognitoUsername,
-      UserAttributes: [{ Name: "custom:tenant_id", Value: finalTenantString }],
+      UserAttributes: [{ Name: "custom:Tenant", Value: finalTenantString }],
     });
 
     console.log("finalTenantString: ", finalTenantString);
